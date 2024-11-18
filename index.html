@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ポケブロスサーバー内ギャラリー</title>
+    <link rel="stylesheet" href="styles.css">
+    <style></style>
+</head>
+<body>
+    <h1>ダークモード切り替え</h1>
+    <p>外部ファイル化のテストです！</p>
+
+    <!-- 切り替えボタン -->
+    <button class="toggle-button" id="themeToggle">🌙 ダークモード</button>
+
+    <!-- 外部JavaScriptを読み込む -->
+    <script src="theme-toggle.js"></script>
+    
+    <h1>ポケブロスサーバー内ギャラリー</h1>
+    <input type="text" id="searchBox" oninput="filterImages()" placeholder="画像を検索...">
+    <div class="gallery" id="gallery">
+        <!-- ここに画像が挿入される -->
+    </div>
+    <script>
+        fetch('images.json')
+            .then(response => response.json())
+            .then(images => {
+                const gallery = document.getElementById('gallery');
+                images.forEach(image => {
+                    const div = document.createElement('div');
+                    div.className = "image-container"; // 検索用にクラスを追加
+                    div.dataset.name = image.alt.toLowerCase(); // 小文字で名前を保存
+                    const img = document.createElement('img');
+                    img.src = image.url;
+                    img.alt = image.alt || "ギャラリー画像";
+                    div.appendChild(img);
+                    gallery.appendChild(div);
+                });
+            })
+            .catch(error => console.error('画像データの読み込みに失敗しました:', error));
+
+        // 検索ボックスの内容に応じて画像を絞り込み
+        function filterImages() {
+            const searchValue = document.getElementById('searchBox').value.toLowerCase();
+            const images = document.querySelectorAll('.image-container');
+            images.forEach(image => {
+                if (image.dataset.name.includes(searchValue)) {
+                    image.style.display = "block";
+                } else {
+                    image.style.display = "none";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
