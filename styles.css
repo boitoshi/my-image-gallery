@@ -1,59 +1,175 @@
+/* 共通のスタイル */
+:root {
+    --text: #333;
+    --background: #fff;
+    --header-bg: #f8f9fa;
+    --primary: #0070f3;
+    --gallery-bg: #f5f5f5;
+}
+
+/* ダークテーマ */
+body.dark-theme {
+    --text: #eee;
+    --background: #1e1e1e;
+    --header-bg: #292929;
+    --primary: #82b1ff;
+    --gallery-bg: #222;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
     margin: 0;
     padding: 0;
-}
-.gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-    margin: 20px;
-}
-.gallery img {
-    max-width: 200px;
-    height: auto;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    transition: transform 0.2s;
-}
-.gallery img:hover {
-    transform: scale(1.1);
-}
-
-/* スマホ表示の調整 */
-@media screen and (max-width: 600px) {
-    .gallery img {
-        max-width: 100px; /* 画像サイズを小さくする */
-    }
-}
-
-/* ライトモード用スタイル */
-body {
-    background-color: #ffffff;
-    color: #000000;
     font-family: Arial, sans-serif;
-    transition: background-color 0.3s, color 0.3s;
-}
-.toggle-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #f0f0f0;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 20px;
-    cursor: pointer;
+    color: var(--text);
+    background-color: var(--background);
     transition: background-color 0.3s, color 0.3s;
 }
 
-/* ダークモード用スタイル */
-body.dark-mode {
-    background-color: #121212;
-    color: #ffffff;
+.container {
+    max-width: 768px; /* Yoshinoki.devと同じ幅 */
+    margin: 0 auto;
+    padding: 1rem;
 }
-body.dark-mode .toggle-button {
-    background-color: #444444;
-    color: #ffffff;
+
+.header {
+    background-color: var(--header-bg);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.dark-mode-btn {
+    display: inline-block; /* インライン扱いにする */
+    margin-left: 10px; /* 見やすくするために余白を調整 */
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    transition: transform 0.2s ease;
+}
+
+.dark-mode-btn:hover {
+    transform: rotate(20deg);
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    background-color: var(--gallery-bg);
+    padding: 1rem;
+    border-radius: 8px;
+}
+
+.gallery img {
+    max-width: 100%;
+    border-radius: 8px;
+    display: block;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* モーダル用 */
+#modal {
+    position: fixed; /* 固定位置にする */
+    top: 50%; /* 画面の中央に配置 */
+    left: 50%; /* 画面の中央に配置 */
+    transform: translate(-50%, -50%); /* 中央に配置するための調整 */
+    z-index: 1000; /* 他の要素の上に表示 */
+    background-color: white; /* 背景色 */
+    padding: 20px; /* パディング */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 影を追加 */
+    border-radius: 8px; /* 角を丸くする */
+    width: 80%; /* 幅を80%に設定 */
+    max-width: 600px; /* 最大幅を600pxに設定 */
+    max-height: 80%; /* 最大高さを80%に設定 */
+    overflow: auto; /* 内容が多い場合にスクロール可能にする */
+}
+
+/* モーダルの背景 */
+#modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明の背景 */
+    z-index: 999; /* モーダルの下に表示 */
+}
+
+/* 閉じるボタンのスタイル */
+#close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+/* URL表示用のinputスタイル */
+#modal-info {
+    width: 100%;
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* コピー用ボタンのスタイル */
+#copy-url {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 70vh;
+    margin-bottom: 10px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none; /* モーダルを非表示にするクラス */
 }

@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ポケブロスサーバー内ギャラリー</title>
     <link rel="stylesheet" href="styles.css">
-    <style></style>
+    <script src="theme-toggle.js" defer></script><!-- ダークモード切替用のスクリプト -->
+    <script src="modal.js" defer></script><!-- モーダル表示用のスクリプト -->
 </head>
 <body>
-    <h1>ダークモード切り替え</h1>
-    <p>外部ファイル化のテストです！</p>
+    <header class="header">
+        <div class="container">
+            <h1 class="site-title">ポケブロスギャラリー</h1>
+            <button id="darkModeToggle" aria-label="ダークモード切替" class="dark-mode-btn">🌙</button>
+        </div>
+    </header>
 
-    <!-- 切り替えボタン -->
-    <button class="toggle-button" id="themeToggle">🌙 ダークモード</button>
 
-    <!-- 外部JavaScriptを読み込む -->
-    <script src="theme-toggle.js"></script>
     
-    <h1>ポケブロスサーバー内ギャラリー</h1>
+    <main class="container">
+    <h2>ポケブロスサーバー内ギャラリー</h2>
+    <p>サーバー内の画像を表示するぜ</p>
     <input type="text" id="searchBox" oninput="filterImages()" placeholder="画像を検索...">
     <div class="gallery" id="gallery">
         <!-- ここに画像が挿入される -->
@@ -53,5 +56,14 @@
             });
         }
     </script>
+
+<!-- モーダル追加 -->
+    <div id="modal-background" class="hidden"></div>
+    <div id="modal" class="hidden">
+        <span id="close-modal" class="close">&times;</span>
+        <img id="modal-img" src="" alt="画像">
+        <input id="modal-info" type="text" readonly>
+        <button id="copy-url">URLをコピー</button>
+    </div>
 </body>
 </html>

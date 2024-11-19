@@ -1,22 +1,20 @@
-// 切り替えボタンを取得
-const toggleButton = document.getElementById('themeToggle');
-const body = document.body;
+const darkModeToggle = document.getElementById("darkModeToggle");
+const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 
-// ローカルストレージに保存されているテーマを確認
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
-    toggleButton.textContent = '☀️ ライトモード';
-}
+darkModeToggle.addEventListener("click", () => {
+    const currentTheme = document.body.classList.contains("dark-theme") ? "dark" : "light";
+    document.body.classList.toggle("dark-theme");
+    localStorage.setItem("theme", currentTheme === "dark" ? "light" : "dark");
 
-// ボタンクリック時の切り替え処理
-toggleButton.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    if (body.classList.contains('dark-mode')) {
-        toggleButton.textContent = '☀️ ライトモード';
-        localStorage.setItem('theme', 'dark'); // ダークモードを保存
-    } else {
-        toggleButton.textContent = '🌙 ダークモード';
-        localStorage.setItem('theme', 'light'); // ライトモードを保存
-    }
+    // アイコンの切り替え
+    darkModeToggle.textContent = currentTheme === "dark" ? "🌙" : "☀️";
 });
+
+// ページロード時のテーマ適用
+if (localStorage.getItem("theme") === "dark" || (!localStorage.getItem("theme") && prefersDarkScheme.matches)) {
+    document.body.classList.add("dark-theme");
+    darkModeToggle.textContent = "☀️";
+} else {
+    document.body.classList.remove("dark-theme");
+    darkModeToggle.textContent = "🌙";
+}
