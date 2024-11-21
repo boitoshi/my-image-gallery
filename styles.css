@@ -173,3 +173,23 @@ body {
 .hidden {
     display: none; /* モーダルを非表示にするクラス */
 }
+
+.pagination {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.pagination button {
+    margin: 0 10px;
+    padding: 5px 15px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.page-info {
+    margin: 0 15px;
+}
