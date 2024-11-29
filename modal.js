@@ -13,7 +13,100 @@ document.addEventListener('DOMContentLoaded', () => {
     let totalPages = 1;
     let imagesPerPage = 50; // 1ページあたりの表示数
 
-    // 2. 初期表示: 全ての画像を取得
+
+    // デバッグログの追加
+    console.log('Elements found:', {
+        gallery: !!gallery,
+        modal: !!modal,
+        modalImg: !!modalImg,
+        modalInfo: !!modalInfo,
+        modalBackground: !!modalBackground
+    });
+
+
+
+    // 2. モーダル関連の機能
+    gallery.addEventListener('click', (e) => {
+        // イベントの詳細をログ出力
+        console.log({
+            target: e.target,
+            currentTarget: e.currentTarget,
+            path: e.composedPath()
+        });
+        
+        if (e.target.tagName.toLowerCase() === 'img') {
+            console.log('Image clicked:', e.target.src);
+            modalImg.src = e.target.src;
+            modalInfo.value = e.target.src;
+            modal.classList.remove('hidden');
+            modalBackground.classList.remove('hidden');
+        }
+    });
+
+    // モーダルを閉じる
+    closeModal.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modalBackground.classList.add('hidden');
+    });
+    // モーダル背景をクリックして閉じる
+    modalBackground.addEventListener('click', () => {
+        modal.classList.add('hidden');
+        modalBackground.classList.add('hidden');
+    });
+    //  URLをコピーする
+    copyUrlButton.addEventListener('click', () => {
+        navigator.clipboard.writeText(modalInfo.value)
+            .then(() => showToast('URLをコピーしました!', 'success'))
+            .catch(() => showToast('URLコピー失敗じゃあ。', 'error'));
+    });
+
+    // トースト通知を表示する関数
+    function showToast(message, type = 'success') {
+        // 既存のトーストを削除
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) {
+            existingToast.remove();
+        }
+
+        // トースト要素を作成
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+
+        // スタイルを動的に設定
+        Object.assign(toast.style, {
+            position: 'fixed',
+            bottom: '20px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: type === 'success' ? '#4CAF50' : '#f44336',
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '4px',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            opacity: '0',
+            transition: 'opacity 0.3s ease-in-out',
+            zIndex: '10000'
+        });
+
+        // トーストを表示
+        document.body.appendChild(toast);
+        
+        // フェードイン
+        requestAnimationFrame(() => {
+            toast.style.opacity = '1';
+        });
+
+        // 1秒後に消去
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                toast.remove();
+            }, 100);
+        }, 1000);
+    }
+
+    // 3. 初期表示: 全ての画像を取得
     fetchAllImages().then(images => {
         allImages = images;
         displayCurrentPageImages(allImages);
@@ -32,34 +125,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 500);
     });
 
-    // 3. モーダル関連の機能
-    gallery.addEventListener('click', (e) => {
-        console.log("クリックイベントが発生しました！"); // デバッグログ
-        if (e.target.tagName === 'IMG') { // クリックが画像の場合
-            console.log("画像がクリックされました: ", e.target.src); // クリックされた画像のURLをログ出力
-            modalImg.src = e.target.src;
-            modalInfo.value = e.target.src; // URLを表示
-            modal.classList.remove('hidden'); // モーダルを表示
-            modalBackground.classList.remove('hidden'); // 背景を表示
-        }
-    });
 
-    // モーダルを閉じる
-    closeModal.addEventListener('click', () => {
-        modal.classList.add('hidden');
-        modalBackground.classList.add('hidden');
-    });
-    // モーダル背景をクリックして閉じる
-    modalBackground.addEventListener('click', () => {
-        modal.classList.add('hidden');
-        modalBackground.classList.add('hidden');
-    });
-    //  URLをコピーする
-    copyUrlButton.addEventListener('click', () => {
-        navigator.clipboard.writeText(modalInfo.value)
-            .then(() => alert('URLがコピーされました!'))
-            .catch(() => alert('URLのコピーに失敗しました。'));
-    });
+
 
     // 画像取得関数
     async function fetchAllImages() {
